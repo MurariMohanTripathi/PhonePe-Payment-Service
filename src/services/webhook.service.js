@@ -14,7 +14,7 @@ const verifyPhonePeWebhook = ({ rawBody, keyId, signature }) => {
   const generatedSignature = crypto
     .createHmac("sha256", env.phonepe.webhookSecret)
     .update(rawBody)
-    .digest("hex");
+    .digest("base64");
   try {
     return crypto.timingSafeEqual(
       Buffer.from(generatedSignature),
