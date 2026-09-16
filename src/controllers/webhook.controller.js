@@ -6,6 +6,16 @@ const handlePhonePeWebhook = async(req,res)=>{
         const keyId = req.headers["x-phonepe-checksum-key-id"];
         const signature = req.headers["x-phonepe-checksum-signature"];
         const rawBody = req.body;
+        console.log("Webhook verification debug:", {
+  hasKeyId: Boolean(keyId),
+  receivedKeyId: keyId,
+  configuredKeyId: process.env.PHONEPE_WEBHOOK_KEY_ID,
+  hasSignature: Boolean(signature),
+  signatureLength: signature?.length,
+  hasWebhookSecret: Boolean(
+    process.env.PHONEPE_WEBHOOK_SECRET
+  ),
+});
         const isValid = webhookService.verifyPhonePeWebhook({rawBody,keyId,signature});
         if(!isValid){
             console.warn("Rejected invalid Phone webhook");
